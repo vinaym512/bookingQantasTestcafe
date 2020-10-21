@@ -1,0 +1,15 @@
+{
+    "browsers": ["chrome"],
+    "src": ["tests/*.js"],
+    "reporter": {
+        "name": "xunit",
+        "output": "reports/report.xml"
+    },
+    "screenshots": {
+        "path": "/home/user/tests/screenshots/",
+        "takeOnFails": true,
+        "pathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+    },
+    "skipJsErrors":true,
+    "concurrency":1
+}
