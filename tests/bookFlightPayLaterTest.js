@@ -1,62 +1,66 @@
-import { Selector } from 'testcafe';
+import HomePageElements from '../pages/bookingHomepage';
+import SelectionPageElements from '../pages/selectionPage';
+import FillDataPageElements from '../pages/fillDataPage';
+import SuccessPageElements from '../pages/successPage';
 
-fixture `test qantas hotel booking`
-    // .page `http://devexpress.github.io/testcafe/example`;
-// .page `http://google.com`
-    const val = Selector('#developer-name');
+const homePage = new HomePageElements();
+const selectPage = new SelectionPageElements();
+const fillDataPage = new FillDataPageElements();
+const successPage = new SuccessPageElements();
 
-test('My first test', async t => {
+fixture`test flight booking`
+
+test('book flight pay later', async t => {
     await t
-    .navigateTo('http://phptravels.com/demo/')
-    //Select flight tab
-        .click('div:nth-of-type(2) > .resource-box .btn.btn-block.btn-lg.btn-primary')
-        .click('.flights.text-center')
+        .navigateTo('http://phptravels.com/demo/')
+        //Select flight tab
+        .click(homePage.goToBookingPageBtn)
+        .click(homePage.flightTab)
         //Select date
-                .click('[class="class12 col-6 col-12"] .form-icon-left')
-                .click('div:nth-of-type(9) .datepicker--cells.datepicker--cells-days > div:nth-of-type(35)')
+        .click(selectPage.clickDate)
+        .click(selectPage.selectDate)
         //Select from
-        .click('.no-gutters.row > div:nth-of-type(1) > .form-group > .form-icon-left.typeahead__container')
-        .typeText('div#select2-drop  .select2-input', 'SYD')
-        .click('.select2-highlighted.select2-result.select2-result-selectable.select2-results-dept-0')
+        .click(selectPage.clickFromLoc)
+        .typeText(selectPage.enterFromLocValue, 'SYD')
+        .click(selectPage.selectFromLoc)
         //Select to
-        .click('.no-gutters.row > div:nth-of-type(2) > .form-group > .form-icon-left.typeahead__container')
-        .typeText('div#select2-drop  .select2-input', 'DEL')
-        //// .click('.select2-highlighted.select2-result.select2-result-selectable.select2-results-dept-0')
-        .click('li:nth-of-type(1) > .select2-result-label')
-        //Select number of guests
-        for (let i =0; i<2;i++){
-        await t.click('[class="col-lg-4 col-sm-12 col-xs-12 col-4"]:nth-of-type(1) .input-group-btn-vertical [type="button"]:nth-of-type(1)')
-            .click('[class="col-lg-4 col-sm-12 col-xs-12 col-4"]:nth-of-type(2) .input-group-btn-vertical [type="button"]:nth-of-type(1)')    
-        }
-        // click search button
-        await t.click('[class="col-lg-1 col-sm-12 col-xs-12"] .btn')
+        .click(selectPage.clickToLoc)
+        .typeText(selectPage.enterToLocValue, 'DEL')
+        .click(selectPage.selectToLoc)
+    //Select number of guests
+    for (let i = 0; i < 2; i++) {
+        await   t.click(selectPage.clickGuestAdult)
+                .click(selectPage.clickGuestChild)
+    }
+    // click search button
+    await t.click(selectPage.clickSearchBtn)
         // click first book now
-        .click('#LIST .oneway_0:nth-of-type(1) .theme-search-results-item-price-btn')
+        .click(fillDataPage.clickFirstBookNowBtn)
         // enter first name, last name, email, confirm email
-        // .typeText('[class="col-12 col-sm-6 o2"] span', 'abc')
-        .typeText('[class="col-12 col-sm-6 o2"] .pure-material-textfield-outlined', 'abc')
-        .typeText('[class="row gap-20 mb-0"] [class="col-md-6 col-12 o1"] .pure-material-textfield-outlined', 'xyz')
+        .typeText(fillDataPage.enterFName, 'abc')
+        .typeText(fillDataPage.enterLName, 'xyz')
 
-        .typeText('[class="col-md-6 col-12 o2"] .pure-material-textfield-outlined','abc@d.com')
-        .typeText('#guestform .form-group:nth-of-type(2) [class="col-md-6 col-12 o1"] .pure-material-textfield-outlined','abc@d.com')
-        .typeText('#guestform .form-group:nth-of-type(3) span', '0412345678')
+        .typeText(fillDataPage.enterEmailId, 'abc@d.com')
+        .typeText(fillDataPage.confirmEmailId, 'abc@d.com')
+        .typeText(fillDataPage.enterPhoneNo, '0412345678')
         // select country
-        .click('.chosen-single span')
-        .click('[data-option-array-index="6"]')
+        .click(fillDataPage.clickCountryDD)
+        .click(fillDataPage.selectCountry)
         // enter pasenger details
-        .typeText('input#passenger_name_0','abc')
-        .typeText('input#passenger_age_0','55')
-        .typeText('input#passenger_passport_0','ABC123456')
-// confirm booking
-.click('button[name="guest"]')
-.expect(Selector('.success-box.unpaid').exists).ok()
-.expect(Selector('.success-box.unpaid').withText('Your booking status is Unpaid').exists).ok()
-// pay on arrival
-.setNativeDialogHandler(() => true)
-.click('.arrivalpay.btn.btn-default')
-.expect(Selector('.reserved.success-box').exists).ok()
-.expect(Selector('.reserved.success-box').innerText).contains('Your booking status is Reserved')
+        .typeText(fillDataPage.enterPassengerName, 'abc')
+        .typeText(fillDataPage.enterPassengerAge, '55')
+        .typeText(fillDataPage.enterPassengerPassport, 'ABC123456')
+        // confirm booking
+        .click(fillDataPage.clickBookinBtn)
+        .expect(successPage.successMsgBox.exists).ok()
+        .expect(successPage.successMsg.withText('Your booking status is Unpaid').exists).ok()
+        // pay on arrival
+        .setNativeDialogHandler(() => true)
+        .click(successPage.payOnArrivalBtn)
+        .expect(successPage.successMsgBox.exists).ok()
+        .expect(successPage.successMsg.innerText).contains('Your booking status is Reserved')
 
-        await t.wait(5000)
+        // just so can see the final page while local execution
+    await t.wait(5000)
 
 });

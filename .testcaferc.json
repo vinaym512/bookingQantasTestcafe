@@ -6,7 +6,7 @@
         "output": "reports/report.xml"
     },
     "screenshots": {
-        "path": "/home/user/tests/screenshots/",
+        "path": "reports/screenshots/",
         "takeOnFails": true,
         "pathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
     },

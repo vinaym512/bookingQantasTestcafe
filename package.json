@@ -6,8 +6,7 @@
     "main": "pathToMain",
     "dependencies": {},
     "scripts": {
-        "test1": "testcafe tests/*.js",
-        "test2": "testcafe testRunner.js",
+        "testall": "testcafe tests/*.js",
         "test": "testcafe tests/bookFlightPayLaterTest.js"
     }
 }
