@@ -13,14 +13,14 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
 
-      - run: yarn global add testcafe
+      - run: yarn install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: yarn run test
+      - run: yarn test
 
       - store_test_results:
-          path: /tmp/test-results
+          path: /reports
