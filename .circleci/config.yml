@@ -11,14 +11,14 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
 
-      - run: npm install
+      - run: npm install -g testcafe
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: npm test
+      - run: testcafe chromium:headless tests/bookFlightPayLaterTest.js
 
       - store_test_results:
           path: /reports
